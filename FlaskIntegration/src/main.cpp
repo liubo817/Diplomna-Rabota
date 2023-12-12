@@ -32,19 +32,14 @@ void setup(void)
 
 void sendSensorData(float data) {
   HTTPClient http;
-
   // Your Flask server endpoint
   http.begin(serverAddress);
-
   // Specify content type
   http.addHeader("Content-Type", "application/json");
-
   // Create JSON payload
   String jsonData = "{\"sensorData\":" + String(data) + "}";
-
   // Send the POST request
   int httpResponseCode = http.POST(jsonData);
-
   // Check for errors
   if (httpResponseCode > 0) {
     Serial.print("HTTP Response code: ");
@@ -56,22 +51,24 @@ void sendSensorData(float data) {
   // Free resources
   http.end();
 }
-
 void loop(void)
-{ 
-  // Send the command to get temperatures
-  sendSensorData(sensor.requestTemperatures());
-    // Send data to Flask server
-  // if (sendSensorData(sensor.requestTemperatures()) {
-  //   Serial.println("Data sent successfully");
-  // } else {
-  //   Serial.println("Failed to send data");
-  // }
-  //print the temperature in Celsius
+{
+  // Initiate temperature reading
+  sensor.requestTemperatures();
+
+  // Wait for temperature reading to complete (adjust the delay if needed)
+  delay(750);
+
+  // Fetch the temperature value
+  float temperatureC = sensor.getTempCByIndex(0);
+
+  // Print the temperature in Celsius
   Serial.print("Temperature: ");
-  Serial.print(sensor.getTempCByIndex(0));
-  Serial.print("C");
-  Serial.println();
-  
-  delay(500);
+  Serial.print(temperatureC);
+  Serial.println("C");
+
+  // Send data to Flask server
+  sendSensorData(temperatureC);
+
+  delay(5000); // Adjust the delay based on your requirements
 }
