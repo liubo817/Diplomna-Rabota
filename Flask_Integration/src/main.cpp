@@ -7,8 +7,8 @@
 // Data wire is plugged into digital pin 2 on the Arduino
 #define ONE_WIRE_BUS 4
 
-const char* ssid = ""; //YourWiFiSSID
-const char* password = ""; //YourWiFiPassword
+const char* ssid = "A1_BDF6"; //YourWiFiSSID
+const char* password = "48575443203A96AA"; //YourWiFiPassword
 const char* serverAddress = "http://192.168.100.10:5000/receive_data"; // Replace with the actual IP address or domain name of your Flask server
 
 // Setup a oneWire instance to communicate with any OneWire device
