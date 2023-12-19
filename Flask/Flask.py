@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import plotly.express as px
 from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
+import pytz
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///temperature_data.db'
@@ -16,13 +17,23 @@ with app.app_context():
     # This is necessary to create the tables before running the app
     db.create_all()
 
+
+def convert_to_bulgarian_time(timestamp):
+    # Convert timestamp to Bulgarian time
+    utc_timezone = pytz.timezone('UTC')
+    bulgarian_timezone = pytz.timezone('Europe/Sofia')
+    utc_time = utc_timezone.localize(timestamp)
+    bulgarian_time = utc_time.astimezone(bulgarian_timezone)
+    return bulgarian_time
+
+
 @app.route('/')
 def index():
     # Retrieve data from the database
     data = TemperatureData.query.all()
 
     # Create a pandas DataFrame
-    df = pd.DataFrame([(entry.timestamp, entry.temperature) for entry in data], columns=['timestamp', 'temperature'])
+    df = pd.DataFrame([(convert_to_bulgarian_time(entry.timestamp), entry.temperature) for entry in data], columns=['timestamp', 'temperature'])
 
     # Create a Plotly chart
     fig = px.line(df, x='timestamp', y='temperature', labels={'x': 'Timestamp', 'y': 'Temperature'})
