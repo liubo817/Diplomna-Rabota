@@ -5,30 +5,25 @@
 #include <HTTPClient.h>
 
 // Data wire is plugged into digital pin 2 on the Arduino
-#define ONE_WIRE_BUS 4
+#define ds18b20WaterPin 4
+#define uvPin 32
+#define uvRefPin 39
+#define turbidityPin 33
+#define waterLevelSensorPower 21
+//#define waterLevelPin 2
+#define brightnessPin 36
+
+
+int water_level;
+int water_level_percent;
+
 
 const char* ssid = "A1_A2FAE9"; //YourWiFiSSID
 const char* password = "13605f52"; //YourWiFiPassword
-const char* serverAddress = "http://192.168.1.3:5000/receive_data";
+const char* serverAddress = "http://192.168.1.2:5000/receive_data";
 
-// Setup a oneWire instance to communicate with any OneWire device
-OneWire oneWire(ONE_WIRE_BUS);	
-
-// Pass oneWire reference to DallasTemperature library
-DallasTemperature sensor(&oneWire);
-
-void setup(void)
-{
-  
-  sensor.begin();	// Start up the library
-  Serial.begin(9600);
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.println("Connecting to WiFi...");
-  }
-  Serial.println("Connected to WiFi");
-}
+OneWire oneWire(ds18b20WaterPin);	
+DallasTemperature ds18b20_water(&oneWire);
 
 void sendSensorData(float data) {
   HTTPClient http;
@@ -51,24 +46,92 @@ void sendSensorData(float data) {
   // Free resources
   http.end();
 }
+
+float mapfloat(float x, float in_min, float in_max, float out_min, float out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+int turbidity()
+{
+  int sensorValue = analogRead(turbidityPin);
+  int turbidity = map(sensorValue, 0, 4095, 0, 100);
+  int clean = map(turbidity, 0, 100, 100, 0);
+  return clean;
+}
+
+
+float waterTemp()
+{
+  ds18b20_water.requestTemperatures();
+  delay(750);
+  float temperatureC = ds18b20_water.getTempCByIndex(0);
+  return temperatureC;
+}
+
+
+
+float waterLevel()
+{
+  int waterLevel;
+  int sensor_data;
+  float waterLevelPercentage;
+	digitalWrite(waterLevelSensorPower, HIGH);
+	delay(10);
+	//waterLevel = analogRead(waterLevelPin);
+	digitalWrite(waterLevelSensorPower, LOW);
+  //waterLevelPercentage = map(waterLevel, 0, 1400, 0, 100);
+	//return waterLevelPercentage;
+  return 0;
+}
+
+
+float UVlevel()
+{
+  int uvLevel = analogRead(uvPin);
+  int refLevel = analogRead(uvRefPin);
+  float outputVoltage = 3.3 / refLevel * uvLevel;
+  float uvIntensity = mapfloat(outputVoltage, 0.99, 2.8, 0.0, 15.0); //Convert the voltage to a UV intensity level
+  return uvIntensity;
+}
+
+int brightness()
+{
+  int brightnessLevel = analogRead(brightnessPin);
+  int brightnessPercentage;
+  brightnessPercentage = map(brightnessLevel, 0, 4095, 0, 100);
+  return brightnessPercentage;
+}
+
+
+
+void setup(void)
+{
+  pinMode(waterLevelSensorPower, OUTPUT);
+  pinMode(uvPin, INPUT);
+  pinMode(uvRefPin, INPUT);
+  ds18b20_water.begin();
+  Serial.begin(9600);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Connecting to WiFi...");
+  }
+  Serial.println("Connected to WiFi");
+}
+
+
 void loop(void)
 {
-  // Initiate temperature reading
-  sensor.requestTemperatures();
+  Serial.println(waterTemp());
+  Serial.println(UVlevel());
+  Serial.println(brightness());
 
-  // Wait for temperature reading to complete (adjust the delay if needed)
-  delay(750);
+  sendSensorData(waterTemp());
+  //sendSensorData(turbidity());
+  //sendSensorData(waterLevel());
+  sendSensorData(UVlevel());
+  sendSensorData(brightness());
 
-  // Fetch the temperature value
-  float temperatureC = sensor.getTempCByIndex(0);
-
-  // Print the temperature in Celsius
-  Serial.print("Temperature: ");
-  Serial.print(temperatureC);
-  Serial.println("C");
-
-  // Send data to Flask server
-  sendSensorData(temperatureC);
-
-  delay(5000); // Adjust the delay based on your requirements
+  delay(5000);
 }
