@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temperature Data Visualization</title>
+    <title>Sensor Data Visualization</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-    <h1>Temperature Data</h1>
-    <div id="chart"></div>
-    {{ chart_html|safe }}
+    <h1>Sensor Data</h1>
+
+    {% for sensor_type, chart_html in graphs.items() %}
+        <div id="{{ sensor_type|replace(' ', '_') }}_chart">
+            <h2>{{ sensor_type }}</h2>
+            {{ chart_html|safe }}
+        </div>
+    {% endfor %}
 </body>
 </html>

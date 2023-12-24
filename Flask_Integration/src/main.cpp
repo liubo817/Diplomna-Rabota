@@ -18,21 +18,21 @@ int water_level;
 int water_level_percent;
 
 
-const char* ssid = "A1_A2FAE9"; //YourWiFiSSID
-const char* password = "13605f52"; //YourWiFiPassword
-const char* serverAddress = "http://192.168.1.2:5000/receive_data";
+const char* ssid = ""; //YourWiFiSSID
+const char* password = ""; //YourWiFiPassword
+const char* serverAddress = ":5000/receive_data";
 
 OneWire oneWire(ds18b20WaterPin);	
 DallasTemperature ds18b20_water(&oneWire);
 
-void sendSensorData(float data) {
+void sendSensorData(const char* sensorType, float data) {
   HTTPClient http;
   // Your Flask server endpoint
   http.begin(serverAddress);
   // Specify content type
   http.addHeader("Content-Type", "application/json");
   // Create JSON payload
-  String jsonData = "{\"sensorData\":" + String(data) + "}";
+  String jsonData = "{\"sensorType\":\"" + String(sensorType) + "\",\"sensorData\":" + String(data) + "}";
   // Send the POST request
   int httpResponseCode = http.POST(jsonData);
   // Check for errors
@@ -46,6 +46,7 @@ void sendSensorData(float data) {
   // Free resources
   http.end();
 }
+
 
 float mapfloat(float x, float in_min, float in_max, float out_min, float out_max)
 {
@@ -127,11 +128,11 @@ void loop(void)
   Serial.println(UVlevel());
   Serial.println(brightness());
 
-  sendSensorData(waterTemp());
+  sendSensorData("Water Temp", waterTemp());
   //sendSensorData(turbidity());
   //sendSensorData(waterLevel());
-  sendSensorData(UVlevel());
-  sendSensorData(brightness());
+  sendSensorData("UV Level", UVlevel());
+  sendSensorData("Brightness Level", brightness());
 
   delay(5000);
 }

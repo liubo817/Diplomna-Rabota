@@ -5,7 +5,7 @@ import pandas as pd
 import pytz
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///temperature_data.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sensor_data.db'
 db = SQLAlchemy(app)
 
 class SensorData(db.Model):
@@ -34,13 +34,14 @@ def index():
     # Create a pandas DataFrame
     df = pd.DataFrame([(convert_to_bulgarian_time(entry.timestamp), entry.sensor_type, entry.sensor_data) for entry in data], columns=['timestamp', 'sensor_type', 'sensor_data'])
 
-    # Create a Plotly chart
-    fig = px.line(df, x='timestamp', y='sensor_data', color='sensor_type', labels={'x': 'Timestamp', 'y': 'Sensor Data'})
+    # Create a Plotly chart for each sensor type
+    graphs = {}
+    for sensor_type in df['sensor_type'].unique():
+        sensor_df = df[df['sensor_type'] == sensor_type]
+        fig = px.line(sensor_df, x='timestamp', y='sensor_data', labels={'x': 'Timestamp', 'y': 'Sensor Data'})
+        graphs[sensor_type] = fig.to_html(full_html=False)
 
-    # Save the chart to HTML
-    chart_html = fig.to_html(full_html=False)
-
-    return render_template('index.html', chart_html=chart_html)
+    return render_template('index.html', graphs=graphs)
 
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
