@@ -1,0 +1,19 @@
+Info: Updated footprint U5 (Diplomna:5pin_holes): : (no changes)
+Info: Updated footprint REF** (MountingHole:MountingHole_2.2mm_M2_DIN965_Pad_TopBottom): : (no changes)
+Info: Updated footprint REF** (Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder): : (no changes)
+Info: Updated footprint REF** (Resistor_SMD:R_1206_3216Metric): : (no changes)
+Info: Updated footprint REF** (Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder): : (no changes)
+Info: Updated footprint R1 (Resistor_SMD:R_1206_3216Metric): : (no changes)
+Updated footprint U4 (Diplomna:light sensor): : OK
+Updated footprint U3 (Diplomna:DS18B20_3dmodel): : OK
+Updated footprint U2 (Diplomna:DS18B20_3dmodel): : OK
+Info: Updated footprint REF** (Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder): : (no changes)
+Info: Updated footprint REF** (Package_TO_SOT_SMD:SOT-23): : (no changes)
+Updated footprint U4 (Diplomna:DS18B20_3dmodel): : OK
+Info: Updated footprint REF** (Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder): : (no changes)
+Updated footprint U1 (Diplomna:MODULE_ESP32-DEVKITC): : OK
+Info: Updated footprint REF** (Diplomna:3pin_holes): : (no changes)
+Info: Updated footprint REF** (MountingHole:MountingHole_2.2mm_M2_DIN965_Pad_TopBottom): : (no changes)
+Updated footprint U4 (Diplomna:light sensor): : OK
+Updated footprint U6 (Diplomna:DS18B20_3dmodel): : OK
+Info: Updated footprint REF** (Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder): : (no changes)

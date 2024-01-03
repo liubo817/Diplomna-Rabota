@@ -113,26 +113,26 @@ void setup(void)
   pinMode(uvRefPin, INPUT);
   ds18b20_water.begin();
   Serial.begin(9600);
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
+  //WiFi.begin(ssid, password);
+  /*while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     Serial.println("Connecting to WiFi...");
   }
-  Serial.println("Connected to WiFi");
+  Serial.println("Connected to WiFi");*/
 }
 
 
 void loop(void)
 {
   Serial.println(waterTemp());
-  Serial.println(UVlevel());
-  Serial.println(brightness());
+  //Serial.println(UVlevel());
+  //Serial.println(brightness());
 
-  sendSensorData("Water Temp", waterTemp());
+  //sendSensorData("Water Temp", waterTemp());
   //sendSensorData(turbidity());
   //sendSensorData(waterLevel());
-  sendSensorData("UV Level", UVlevel());
-  sendSensorData("Brightness Level", brightness());
+  //sendSensorData("UV Level", UVlevel());
+  //sendSensorData("Brightness Level", brightness());
 
   delay(5000);
 }

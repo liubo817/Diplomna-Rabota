@@ -1,0 +1,17 @@
+Info: Processing symbol 'J1:'.
+Info: Processing symbol 'K1:EC2-5NU:RELAY_EC2-5NU'.
+Info: Processing symbol 'R1:Resistor_SMD:R_1206_3216Metric'.
+Info: Processing symbol 'U1:Diplomna:5pin_holes'.
+Info: Processing symbol 'U2:Diplomna:light sensor'.
+Info: Processing symbol 'U3:Diplomna:DS18B20_3dmodel'.
+Warning: No net found for symbol U2 pin BASE.
+Warning: No net found for symbol U2 pin COLLECTOR.
+Warning: No net found for symbol U2 pin EMITTER.
+Error: Cannot add J1 (no footprint assigned).
+Error: Cannot add K1 (footprint 'EC2-5NU:RELAY_EC2-5NU' not found).
+Error: U2 pad 3 not found in Diplomna:light sensor.
+Error: U2 pad 2 not found in Diplomna:light sensor.
+Error: U2 pad 1 not found in Diplomna:light sensor.
+
+
+Info: Total warnings: 3, errors: 5.
