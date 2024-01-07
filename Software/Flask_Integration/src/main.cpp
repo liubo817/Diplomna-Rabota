@@ -6,11 +6,12 @@
 
 // Data wire is plugged into digital pin 2 on the Arduino
 #define ds18b20WaterPin 4
+#define ds18b20Pin 34
 #define uvPin 32
-#define uvRefPin 39
+#define uvRefPin 12
 #define turbidityPin 33
 #define waterLevelSensorPower 21
-//#define waterLevelPin 2
+//#define waterLevelPin 13
 #define brightnessPin 36
 
 
