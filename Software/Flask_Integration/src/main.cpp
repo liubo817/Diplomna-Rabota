@@ -19,8 +19,8 @@ int water_level;
 int water_level_percent;
 
 
-const char* ssid = ""; //YourWiFiSSID
-const char* password = ""; //YourWiFiPassword
+const char* ssid = "A1_BDF6"; //YourWiFiSSID
+const char* password = "48575443203A96AA"; //YourWiFiPassword
 const char* serverAddress = ":5000/receive_data";
 
 OneWire oneWire(ds18b20WaterPin);	

@@ -1,0 +1,25 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask LED Control</title>
+</head>
+<body>
+    <h1>Flask LED Control</h1>
+    <button onclick="controlLED('ON')">Turn On LED</button>
+    <button onclick="controlLED('OFF')">Turn Off LED</button>
+
+    <script>
+        function controlLED(state) {
+            // Send a request to the Flask server based on the state
+            fetch(`/control_led_${state.toLowerCase()}`)
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
