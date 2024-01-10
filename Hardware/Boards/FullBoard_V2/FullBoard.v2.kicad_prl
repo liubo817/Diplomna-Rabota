@@ -1,15 +1,10 @@
 {
   "board": {
     "active_layer": 0,
-    "active_layer_preset": "All Layers",
+    "active_layer_preset": "",
     "auto_track_width": true,
     "hidden_netclasses": [],
-    "hidden_nets": [
-      "/WaterTemp",
-      "/Relay_Brightness_lamp",
-      "/Relay_UV_lamp",
-      "/Relay_Heater"
-    ],
+    "hidden_nets": [],
     "high_contrast_mode": 0,
     "net_color_mode": 1,
     "opacity": {
@@ -73,7 +68,7 @@
     "zone_display_mode": 0
   },
   "meta": {
-    "filename": "FullBoard.kicad_prl",
+    "filename": "FullBoard.v2.kicad_prl",
     "version": 3
   },
   "project": {
