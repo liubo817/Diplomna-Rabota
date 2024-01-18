@@ -407,7 +407,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "FullBoard.kicad_pro",
+    "filename": "FullBoard.v2.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -436,8 +436,8 @@
     "net_colors": {
       "+3.3V": "rgb(255, 26, 3)",
       "+3V3": "rgb(241, 255, 3)",
-      "/UV_ref_main": "rgb(255, 92, 156)",
-      "/Water level Power": "rgb(146, 255, 82)",
+      "/brightness_out_main": "rgb(255, 92, 156)",
+      "/water_level_power": "rgb(146, 255, 82)",
       "GND": "rgb(0, 39, 255)",
       "GND1": "rgb(0, 236, 255)"
     },
