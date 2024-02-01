@@ -4,27 +4,31 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-// Data wire is plugged into digital pin 2 on the Arduino
-#define ds18b20WaterPin 4
+#define ds18b20WaterPin 16
 #define ds18b20Pin 34
 #define uvPin 32
 #define uvRefPin 12
 #define turbidityPin 33
 #define waterLevelSensorPower 21
-//#define waterLevelPin 13
+#define waterLevelPin 26
 #define brightnessPin 36
+
+#define relay1 19
 
 
 int water_level;
 int water_level_percent;
 
 
-const char* ssid = "A1_BDF6"; //YourWiFiSSID
-const char* password = "48575443203A96AA"; //YourWiFiPassword
-const char* serverAddress = ":5000/receive_data";
+const char* ssid = ""; //YourWiFiSSID
+const char* password = ""; //YourWiFiPassword
+const char* serverAddress = "http://:5000/receive_data";
 
 OneWire oneWire(ds18b20WaterPin);	
 DallasTemperature ds18b20_water(&oneWire);
+
+OneWire oneWireAir(ds18b20Pin);	
+DallasTemperature ds18b20(&oneWireAir);
 
 void sendSensorData(const char* sensorType, float data) {
   HTTPClient http;
@@ -71,6 +75,14 @@ float waterTemp()
   return temperatureC;
 }
 
+float airTemp()
+{
+  ds18b20.requestTemperatures();
+  delay(750);
+  float temperatureC = ds18b20.getTempCByIndex(0);
+  return temperatureC;
+}
+
 
 
 float waterLevel()
@@ -80,10 +92,10 @@ float waterLevel()
   float waterLevelPercentage;
 	digitalWrite(waterLevelSensorPower, HIGH);
 	delay(10);
-	//waterLevel = analogRead(waterLevelPin);
+	waterLevel = analogRead(waterLevelPin);
 	digitalWrite(waterLevelSensorPower, LOW);
-  //waterLevelPercentage = map(waterLevel, 0, 1400, 0, 100);
-	//return waterLevelPercentage;
+  waterLevelPercentage = map(waterLevel, 0, 1400, 0, 100);
+	return waterLevelPercentage;
   return 0;
 }
 
@@ -112,26 +124,38 @@ void setup(void)
   pinMode(waterLevelSensorPower, OUTPUT);
   pinMode(uvPin, INPUT);
   pinMode(uvRefPin, INPUT);
+  pinMode(relay1, OUTPUT);
   ds18b20_water.begin();
+  ds18b20.begin();
   Serial.begin(9600);
-  //WiFi.begin(ssid, password);
-  /*while (WiFi.status() != WL_CONNECTED) {
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     Serial.println("Connecting to WiFi...");
   }
-  Serial.println("Connected to WiFi");*/
+  Serial.println("Connected to WiFi");
 }
 
 
 void loop(void)
 {
+  //millis
   Serial.println(waterTemp());
+  //Serial.println(airTemp());
   //Serial.println(UVlevel());
   //Serial.println(brightness());
+  //Serial.println(waterLevel());
 
-  //sendSensorData("Water Temp", waterTemp());
+  if(waterTemp() > 27)
+  {
+    digitalWrite(relay1, 1);
+  }else{
+    digitalWrite(relay1, 0);
+  }
+  sendSensorData("Water Temp", waterTemp());
+  //sendSensorData("Air Temp", airTemp());
   //sendSensorData(turbidity());
-  //sendSensorData(waterLevel());
+  //sendSensorData("Water Level", waterLevel());
   //sendSensorData("UV Level", UVlevel());
   //sendSensorData("Brightness Level", brightness());
 
