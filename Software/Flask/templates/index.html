@@ -2,18 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sensor Data Visualization</title>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>БОБКА</title>
 </head>
 <body>
-    <h1>Sensor Data</h1>
-
-    {% for sensor_type, chart_html in graphs.items() %}
-        <div id="{{ sensor_type|replace(' ', '_') }}_chart">
-            <h2>{{ sensor_type }}</h2>
-            {{ chart_html|safe }}
-        </div>
-    {% endfor %}
+    <h1>Main page</h1>
+    <a href="/sensors">Click to go to sensors graph page</a>
+    <p>
+    <a href="/control">Click to go to control page</a>
+    </p>
+    <h2>Made by Liubomir Stanev - 12G</h2>
 </body>
 </html>

@@ -3,6 +3,9 @@ import plotly.express as px
 from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
 import pytz
+import requests
+
+ESP32_IP = ""
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sensor_data.db'
@@ -15,7 +18,6 @@ class SensorData(db.Model):
     sensor_data = db.Column(db.Float)
 
 with app.app_context():
-    # This is necessary to create the tables before running the app
     db.create_all()
 
 def convert_to_bulgarian_time(timestamp):
@@ -26,8 +28,16 @@ def convert_to_bulgarian_time(timestamp):
     bulgarian_time = utc_time.astimezone(bulgarian_timezone)
     return bulgarian_time
 
-@app.route('/')
-def index():
+@app.route("/", methods = ["GET"])
+def main_page():
+    return render_template("index.html")
+
+@app.route("/control", methods = ["GET"])
+def control_page():
+    return render_template("control.html")
+
+@app.route('/sensors')
+def sensors():
     # Retrieve data from the database
     data = SensorData.query.all()
 
@@ -41,7 +51,35 @@ def index():
         fig = px.line(sensor_df, x='timestamp', y='sensor_data', labels={'x': 'Timestamp', 'y': 'Sensor Data'})
         graphs[sensor_type] = fig.to_html(full_html=False)
 
-    return render_template('index.html', graphs=graphs)
+    return render_template('sensors.html', graphs=graphs)
+
+@app.route('/control_led_on')
+def control_led_on():
+    try:
+        # Send the 'control=ON' signal to ESP32 using HTTP GET request
+        esp32_url = f"http://{ESP32_IP}/control?state=ON"
+        response = requests.get(esp32_url)
+
+        if response.status_code == 200:
+            return "LED control signal 'ON' sent to ESP32!"
+        else:
+            return f"Failed to send control signal to ESP32. Response: {response.text}", 500
+    except Exception as e:
+        return jsonify({"error": str(e)})
+
+@app.route('/control_led_off')
+def control_led_off():
+    try:
+        # Send the 'control=OFF' signal to ESP32 using HTTP GET request
+        esp32_url = f"http://{ESP32_IP}/control?state=OFF"
+        response = requests.get(esp32_url)
+
+        if response.status_code == 200:
+            return "LED control signal 'OFF' sent to ESP32!"
+        else:
+            return f"Failed to send control signal to ESP32. Response: {response.text}", 500
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
@@ -63,6 +101,8 @@ def receive_data():
     except Exception as e:
         print(f"Error processing data: {str(e)}")
         return jsonify({"error": "Invalid data format"}), 400
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

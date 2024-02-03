@@ -1,16 +1,16 @@
 #include <WiFi.h>
 
-const char* ssid = ""; //YourWiFiSSID
-const char* password = ""; //YourWiFiPassword
+const char* ssid = "A1_A2FAE9"; //YourWiFiSSID
+const char* password = "13605f52"; //YourWiFiPassword
 const int serverPort = 80;
 
-#define ledPin 13
+#define relayPin 19
 
 WiFiServer server(serverPort);
 
 void setup() {
   Serial.begin(9600);
-  pinMode(ledPin, OUTPUT);
+  pinMode(relayPin, OUTPUT);
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
@@ -37,10 +37,10 @@ void loop() {
 
     // Handle the control signal based on the request
     if (request.indexOf("state=ON") != -1) {
-      digitalWrite(ledPin, HIGH);
+      digitalWrite(relayPin, HIGH);
       Serial.println("Turning ON the LED");
     } else if (request.indexOf("state=OFF") != -1) {
-      digitalWrite(ledPin, LOW);
+      digitalWrite(relayPin, LOW);
       Serial.println("Turning OFF the LED");
     }
 
