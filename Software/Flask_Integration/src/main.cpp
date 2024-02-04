@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <math.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <WiFi.h>
@@ -22,10 +23,12 @@ int water_level;
 int water_level_percent;
 bool auto_mode = false;
 
+const float minLogValue = 2.5;  
+const float maxLogValue = 10.0;
 
-const char* ssid = ""; //YourWiFiSSID
-const char* password = ""; //YourWiFiPassword
-const char* serverAddress = "http://:5000/receive_data";
+const char* ssid = "A1_BDF6"; //YourWiFiSSID
+const char* password = "48575443203A96AA"; //YourWiFiPassword
+const char* serverAddress = "http://192.168.100.10:5000/receive_data";
 const int serverPort = 80;
 
 
@@ -76,12 +79,20 @@ float mapfloat(float x, float in_min, float in_max, float out_min, float out_max
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
+float scaleToLogarithmic(int sensorReading)
+{
+  float scaledValue = map(sensorReading, 0, 4095, minLogValue * 1000, maxLogValue * 1000) / 1000.0;
+  return log10(scaledValue);
+}
+
 int turbidity()
 {
-  int sensorValue = analogRead(turbidityPin);
-  int turbidity = map(sensorValue, 0, 4095, 0, 100);
-  int clean = map(turbidity, 0, 100, 100, 0);
-  return clean;
+  int turbidityValue = analogRead(turbidityPin);
+  int cleanValue = map(turbidityValue, 0, 4095, 4095, 0);
+  float logarithmicTurbidity = scaleToLogarithmic(cleanValue);
+  Serial.println("Turbidity" + turbidityValue);
+  Serial.println("Clean" + cleanValue);
+  return logarithmicTurbidity;
 }
 
 
@@ -211,11 +222,13 @@ void loop()
       }
     }
 
+
     // Handle the auto mode state based on the request
     if (request.indexOf("set_auto_mode") != -1) {
       if (request.indexOf("state=ON") != -1) {
         auto_mode = true;
         Serial.println("Auto Mode turned ON");
+
       } else if (request.indexOf("state=OFF") != -1) {
         auto_mode = false;
         Serial.println("Auto Mode turned OFF");
@@ -238,20 +251,19 @@ void loop()
 
   if (currentMillis - lastUpdateTime >= updateInterval) {
 
-    Serial.println(waterTemp());
+    //Serial.println(waterTemp());
     // Serial.println(airTemp());
     // Serial.println(UVlevel());
     // Serial.println(brightness());
     // Serial.println(waterLevel());
-
+    Serial.println(turbidity());
     // Send sensor data to the server
-    sendSensorData("Water Temp", waterTemp());
+    //sendSensorData("Water Temp", waterTemp());
+    sendSensorData("Turbidity", turbidity());
     // sendSensorData("Air Temp", airTemp());
     // sendSensorData("UV Level", UVlevel());
     // sendSensorData("Brightness Level", brightness());
     // sendSensorData("Water Level", waterLevel());
-
-    // Update the last update time
     lastUpdateTime = currentMillis;
   }
 

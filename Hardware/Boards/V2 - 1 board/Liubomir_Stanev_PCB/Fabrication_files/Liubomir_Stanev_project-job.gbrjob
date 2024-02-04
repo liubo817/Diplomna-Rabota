@@ -3,13 +3,13 @@
     "GenerationSoftware": {
       "Vendor": "KiCad",
       "Application": "Pcbnew",
-      "Version": "7.0.10"
+      "Version": "7.0.9"
     },
-    "CreationDate": "2024-02-03T15:37:23+02:00"
+    "CreationDate": "2024-02-04T14:24:30+02:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
-      "Name": "Liubomir_Stanev_PCB",
+      "Name": "Liubomir_Stanev_project",
       "GUID": "4c697562-6f6d-4697-925f-5374616e6576",
       "Revision": "rev?"
     },
@@ -34,47 +34,47 @@
   ],
   "FilesAttributes": [
     {
-      "Path": "Liubomir_Stanev_PCB-F_Cu.gbr",
+      "Path": "Liubomir_Stanev_project-F_Cu.gbr",
       "FileFunction": "Copper,L1,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Liubomir_Stanev_PCB-B_Cu.gbr",
+      "Path": "Liubomir_Stanev_project-B_Cu.gbr",
       "FileFunction": "Copper,L2,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Liubomir_Stanev_PCB-F_Silkscreen.gbr",
+      "Path": "Liubomir_Stanev_project-F_Silkscreen.gbr",
       "FileFunction": "Legend,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Liubomir_Stanev_PCB-B_Silkscreen.gbr",
+      "Path": "Liubomir_Stanev_project-B_Silkscreen.gbr",
       "FileFunction": "Legend,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Liubomir_Stanev_PCB-F_Mask.gbr",
+      "Path": "Liubomir_Stanev_project-F_Mask.gbr",
       "FileFunction": "SolderMask,Top",
       "FilePolarity": "Negative"
     },
     {
-      "Path": "Liubomir_Stanev_PCB-B_Mask.gbr",
+      "Path": "Liubomir_Stanev_project-B_Mask.gbr",
       "FileFunction": "SolderMask,Bot",
       "FilePolarity": "Negative"
     },
     {
-      "Path": "Liubomir_Stanev_PCB-Edge_Cuts.gbr",
+      "Path": "Liubomir_Stanev_project-Edge_Cuts.gbr",
       "FileFunction": "Profile",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Liubomir_Stanev_PCB-F_Fab.gbr",
+      "Path": "Liubomir_Stanev_project-F_Fab.gbr",
       "FileFunction": "AssemblyDrawing,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Liubomir_Stanev_PCB-B_Fab.gbr",
+      "Path": "Liubomir_Stanev_project-B_Fab.gbr",
       "FileFunction": "AssemblyDrawing,Bot",
       "FilePolarity": "Positive"
     }
