@@ -13,11 +13,14 @@
 #define waterLevelPin 26
 #define brightnessPin 36
 
-#define relayPin 19
+#define relayLamp 19
+#define relayUV 18
+#define relayHeater 5
 
 
 int water_level;
 int water_level_percent;
+bool auto_mode = false;
 
 
 const char* ssid = ""; //YourWiFiSSID
@@ -139,7 +142,9 @@ void setup(void)
   pinMode(waterLevelSensorPower, OUTPUT);
   pinMode(uvPin, INPUT);
   pinMode(uvRefPin, INPUT);
-  pinMode(relayPin, OUTPUT);
+  pinMode(relayLamp, OUTPUT);
+  pinMode(relayUV, OUTPUT);
+  pinMode(relayHeater, OUTPUT);
   ds18b20_water.begin();
   ds18b20.begin();
   Serial.begin(9600);
@@ -162,34 +167,70 @@ void loop()
   static unsigned long lastUpdateTime = 0;
   const unsigned long updateInterval = 5000; // Update every 5 seconds
 
-  // Check for incoming connections
   WiFiClient client = server.available();
   if (client) {
-    
-    Serial.println("New client connected");
-
-    // Read the request from the client
     String request = client.readStringUntil('\r');
     Serial.println("Received request: " + request);
 
-    // Handle the control signal based on the request
     if (request.indexOf("state=ON") != -1) {
-      digitalWrite(relayPin, HIGH);
-      Serial.println("Turning ON the LED");
-    } else if (request.indexOf("state=OFF") != -1) {
-      digitalWrite(relayPin, LOW);
-      Serial.println("Turning OFF the LED");
+      if (request.indexOf("device_type=LAMP") != -1) {
+        digitalWrite(relayLamp, HIGH);
+        Serial.println("Turning ON the LAMP");
+      }
+    }
+    else if (request.indexOf("state=OFF") != -1) {
+      if (request.indexOf("device_type=LAMP") != -1) {
+        digitalWrite(relayLamp, LOW);
+        Serial.println("Turning OFF the LAMP");
+      }
     }
 
-    // Send a response to the client
-    client.println("HTTP/1.1 200 OK");
-    client.println("Content-Type: text/html");
-    client.println();
-    client.println("Control signal processed");
+    if (request.indexOf("state=ON") != -1) {
+      if (request.indexOf("device_type=UV_LAMP") != -1) {
+        digitalWrite(relayUV, HIGH);
+        Serial.println("Turning ON the UV LAMP");
+      }
+    }
+    else if (request.indexOf("state=OFF") != -1) {
+      if (request.indexOf("device_type=UV_LAMP") != -1) {
+        digitalWrite(relayUV, LOW);
+        Serial.println("Turning OFF the UV LAMP");
+      }
+    }
 
-    // Close the connection
-    client.stop();
-    Serial.println("Client disconnected");
+    if (request.indexOf("state=ON") != -1) {
+      if (request.indexOf("device_type=HEATER") != -1) {
+        digitalWrite(relayHeater, HIGH);
+        Serial.println("Turning ON the HEATER");
+      }
+    }
+    else if (request.indexOf("state=OFF") != -1) {
+      if (request.indexOf("device_type=HEATER") != -1) {
+        digitalWrite(relayHeater, LOW);
+        Serial.println("Turning OFF the HEATER");
+      }
+    }
+
+    // Handle the auto mode state based on the request
+    if (request.indexOf("set_auto_mode") != -1) {
+      if (request.indexOf("state=ON") != -1) {
+        auto_mode = true;
+        Serial.println("Auto Mode turned ON");
+      } else if (request.indexOf("state=OFF") != -1) {
+        auto_mode = false;
+        Serial.println("Auto Mode turned OFF");
+      }
+
+      // Send a response to the client
+      client.println("HTTP/1.1 200 OK");
+      client.println("Content-Type: text/html");
+      client.println();
+      client.println("Auto Mode state processed");
+
+      // Close the connection
+      client.stop();
+      Serial.println("Client disconnected");
+    }
   }
 
   unsigned long currentMillis = millis();

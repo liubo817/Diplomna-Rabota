@@ -6,10 +6,30 @@
 </head>
 <body>
     <h1>Main page</h1>
-    <a href="/sensors">Click to go to sensors graph page</a>
-    <p>
-    <a href="/control">Click to go to control page</a>
-    </p>
+    <br>
+    <br>
+    <button onclick="autoMode('ON')">Turn On Auto mode</button>
+    <button onclick="autoMode('OFF')">Turn Off Auto mode</button>
+    <br>
+    <br>
+    <form action="/sensors" method="get">
+        <button type="submit">Click to go to sensors graph page</button>
+    </form>
+    <br>
+        <form action="/control" method="get">
+        <button type="submit">Click to go to control page</button>
+    </form>
+    
     <h2>Made by Liubomir Stanev - 12G</h2>
+
+    <script>
+    function autoMode() {
+            fetch('/autoMode')
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+
 </body>
 </html>

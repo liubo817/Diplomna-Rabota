@@ -4,20 +4,45 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask LED Control</title>
+    <title>Flask Device Control</title>
 </head>
 <body>
-    <h1>Flask LED Control</h1>
-    <button onclick="controlLED('ON')">Turn On LED</button>
-    <button onclick="controlLED('OFF')">Turn Off LED</button>
+    <h1>Control page</h1>
+    <button onclick="controlDevice('LAMP', 'ON')">Turn On LAMP</button>
+    <button onclick="controlDevice('LAMP', 'OFF')">Turn Off LAMP</button>
+    <br>
+    <br>
+    <button onclick="controlDevice('UV_LAMP', 'ON')">Turn On UV LAMP</button>
+    <button onclick="controlDevice('UV_LAMP', 'OFF')">Turn Off UV LAMP</button>
+    <br>
+    <br>
+    <button onclick="controlDevice('HEATER', 'ON')">Turn On HEATER</button>
+    <button onclick="controlDevice('HEATER', 'OFF')">Turn Off HEATER</button>
+    <br>
+    <br>
+    <br>
+    <button onclick="goBack()">Go Back</button>
+    <button onclick="goToMainPage()">Go to Main Page</button>
+    <button onclick="goToSensorsPage()">Go to Sensors Page</button>
 
     <script>
-        function controlLED(state) {
-            // Send a request to the Flask server based on the state
-            fetch(`/control_led_${state.toLowerCase()}`)
+        function controlDevice(deviceType, state) {
+            fetch(`/control_device?device_type=${deviceType}&state=${state}`)
                 .then(response => response.text())
                 .then(data => console.log(data))
                 .catch(error => console.error('Error:', error));
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function goToMainPage() {
+            window.location.href = '/';
+        }
+
+        function goToSensorsPage() {
+            window.location.href = '/sensors';
         }
     </script>
 </body>

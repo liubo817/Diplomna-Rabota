@@ -8,12 +8,30 @@
 </head>
 <body>
     <h1>Sensor Data</h1>
-
+    <br>
     {% for sensor_type, chart_html in graphs.items() %}
         <div id="{{ sensor_type|replace(' ', '_') }}_chart">
             <h2>{{ sensor_type }}</h2>
             {{ chart_html|safe }}
         </div>
     {% endfor %}
+
+    <button onclick="goBack()">Go Back</button>
+    <button onclick="goToMainPage()">Go to Main Page</button>
+    <button onclick="goToControlPage()">Go to Control Page</button>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        function goToMainPage() {
+            window.location.href = '/';
+        }
+
+        function goToControlPage() {
+            window.location.href = '/control';
+        }
+    </script>
 </body>
 </html>

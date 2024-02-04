@@ -5,7 +5,7 @@ import pandas as pd
 import pytz
 import requests
 
-ESP32_IP = ""
+ESP32_IP = "192.168.100.234"
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sensor_data.db'
@@ -53,31 +53,41 @@ def sensors():
 
     return render_template('sensors.html', graphs=graphs)
 
-@app.route('/control_led_on')
-def control_led_on():
+@app.route('/autoMode', methods=['GET'])
+def control_mode():
     try:
-        # Send the 'control=ON' signal to ESP32 using HTTP GET request
-        esp32_url = f"http://{ESP32_IP}/control?state=ON"
+        state = request.args.get('state')
+
+        # Send the control signal to ESP32 using HTTP GET request
+        esp32_url = f"http://{ESP32_IP}/state={state}"
         response = requests.get(esp32_url)
 
         if response.status_code == 200:
-            return "LED control signal 'ON' sent to ESP32!"
+            return f"mode signal '{state}' sent to ESP32!"
         else:
-            return f"Failed to send control signal to ESP32. Response: {response.text}", 500
+            return f"Failed to send mode signal to ESP32. Response: {response.text}", 500
     except Exception as e:
         return jsonify({"error": str(e)})
 
-@app.route('/control_led_off')
-def control_led_off():
+@app.route('/control_device', methods=['GET'])
+def control_device():
     try:
-        # Send the 'control=OFF' signal to ESP32 using HTTP GET request
-        esp32_url = f"http://{ESP32_IP}/control?state=OFF"
+        device_type = request.args.get('device_type')
+        state = request.args.get('state')
+
+        # Validate device type
+        valid_device_types = ['LAMP', 'UV_LAMP', 'HEATER']
+        if device_type not in valid_device_types:
+            return jsonify({"error": f"Invalid device type: {device_type}"}), 400
+
+        # Send the control signal to ESP32 using HTTP GET request
+        esp32_url = f"http://{ESP32_IP}/control?device_type={device_type}&state={state}"
         response = requests.get(esp32_url)
 
         if response.status_code == 200:
-            return "LED control signal 'OFF' sent to ESP32!"
+            return f"{device_type} control signal '{state}' sent to ESP32!"
         else:
-            return f"Failed to send control signal to ESP32. Response: {response.text}", 500
+            return f"Failed to send {device_type} control signal to ESP32. Response: {response.text}", 500
     except Exception as e:
         return jsonify({"error": str(e)})
 
