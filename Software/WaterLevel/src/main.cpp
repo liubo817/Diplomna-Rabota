@@ -1,14 +1,14 @@
 #include <Arduino.h>
 
 #define sensorPower 21
-#define sensorPin 2
+#define sensorPin 35
 #define led 25
 int water_level;
 int water_level_percent;
 
 void setup() {
 	// Set D7 as an OUTPUT
-	pinMode(sensorPower, OUTPUT);
+  pinMode(sensorPower, OUTPUT);
   pinMode(led, OUTPUT);
 	
 	// Set to LOW so no power flows through the sensor
@@ -32,19 +32,9 @@ int sensor_to_percent(int level)
 }
 
 void loop() {
-	//get the reading from the function below and print it
   water_level_percent = sensor_to_percent(readSensor(water_level));
   Serial.print("Water level percentage: ");
   Serial.println(water_level_percent);
-	if (water_level_percent <= 85)
-  {
-    digitalWrite(led, HIGH);
-  }else{
-    digitalWrite(led, LOW);
-  }
-
-	
 	delay(1000);
 }
 
-//This is a function used to get the reading

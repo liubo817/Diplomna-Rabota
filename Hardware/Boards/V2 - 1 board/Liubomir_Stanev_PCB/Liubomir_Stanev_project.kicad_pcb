@@ -160,6 +160,11 @@
       (net 5 "/water_temp") (pinfunction "DQ") (pintype "bidirectional") (solder_mask_margin 0.102) (tstamp 5f1be4f8-137d-433a-81dc-e23e868c3502))
     (pad "3" thru_hole circle (at 2.54 0) (size 1.53 1.53) (drill 1.02) (layers "*.Cu" "*.Mask")
       (net 2 "+3.3V") (pinfunction "V_{DD}") (pintype "power_in") (solder_mask_margin 0.102) (tstamp 64a0655a-d1e0-4002-9eb0-857b9a423d5e))
+    (model ":KICAD7_3DMODEL_DIR:Ds18B20/ds18b20.STEP"
+      (offset (xyz 0 -30 -19.5))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 -180 90))
+    )
   )
 
   (footprint "MountingHole:MountingHole_3.2mm_M3" locked (layer "F.Cu")
@@ -202,7 +207,7 @@
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 10d0d291-6665-4dc1-9b57-0aa909ad4500)
     )
-    (fp_text user "${REFERENCE}" (at 7.35 -3.5 -180) (layer "F.Fab")
+    (fp_text user "${REFERENCE}" (at 7.35 -3.5) (layer "F.Fab")
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 91bbb32d-dcd4-4513-9365-f6a2782c4640)
     )
@@ -242,7 +247,7 @@
       (net 1 "+3V3") (pintype "passive") (tstamp b4884ac6-a184-4114-ab87-585dca637f89))
     (pad "2" thru_hole oval (at 12.7 0 270) (size 1.6 1.6) (drill 0.8) (layers "*.Cu" "*.Mask")
       (net 3 "/air_temp") (pintype "passive") (tstamp 14486663-da95-4fbf-9e80-9d181d44e4b0))
-    (model "${KICAD6_3DMODEL_DIR}/Resistor_THT.3dshapes/R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal.wrl" hide
+    (model "${KICAD6_3DMODEL_DIR}/Resistor_THT.3dshapes/R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal.wrl"
       (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
@@ -320,6 +325,11 @@
       (net 4 "GND") (pinfunction "Pin_2") (pintype "passive") (solder_mask_margin 0.102) (tstamp 1789127c-cf1b-4bc0-9661-e5779a4d23de))
     (pad "3" thru_hole circle (at 5.08 0 270) (size 2.4 2.4) (drill 1.2) (layers "*.Cu" "*.Mask")
       (net 8 "/uv_ref_main") (pinfunction "Pin_3") (pintype "passive") (solder_mask_margin 0.102) (tstamp cdd9ac67-1ad3-451a-b369-b37d708434db))
+    (model ":KICAD7_3DMODEL_DIR:3p_con/connector_3p v2.step"
+      (offset (xyz 35 29.5 19.5))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 -180))
+    )
   )
 
   (footprint "Diplomna:3pin_holes" (layer "F.Cu")
@@ -357,6 +367,11 @@
       (net 9 "GND1") (pinfunction "GND") (pintype "power_in") (solder_mask_margin 0.102) (tstamp d8c4120b-86a6-4a04-8b25-eba7275abf4b))
     (pad "3" thru_hole circle (at 2.54 0 180) (size 1.53 1.53) (drill 1.02) (layers "*.Cu" "*.Mask")
       (net 1 "+3V3") (pinfunction "VCC") (pintype "power_in") (solder_mask_margin 0.102) (tstamp b373496d-22a9-4a24-8b52-fc074c944a56))
+    (model ":KICAD7_3DMODEL_DIR:TEMT6000/temt6000.step"
+      (offset (xyz 85 161.5 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 90))
+    )
   )
 
   (footprint "Diplomna:connector_6p" (layer "F.Cu")
@@ -392,6 +407,16 @@
       (net 21 "unconnected-(U8-In3-Pad5)") (pinfunction "In3") (pintype "input+no_connect") (solder_mask_margin 0.102) (tstamp 1ecf2663-bb92-403c-94e9-0693805169df))
     (pad "6" thru_hole circle (at 19.5 0 180) (size 2.4 2.4) (drill 1.2) (layers "*.Cu" "*.Mask")
       (net 19 "/relay_heater") (pinfunction "In4") (pintype "input") (solder_mask_margin 0.102) (tstamp 30cd67cf-56af-4583-9393-8770323eaa67))
+    (model ":KICAD7_3DMODEL_DIR:3p_con/connector_3p v2.step"
+      (offset (xyz 35.5 29 19.5))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 -180))
+    )
+    (model ":KICAD7_3DMODEL_DIR:3p_con/connector_3p v2.step"
+      (offset (xyz 52 29 19.5))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 -180))
+    )
   )
 
   (footprint "MountingHole:MountingHole_3.2mm_M3" locked (layer "F.Cu")
@@ -601,6 +626,11 @@
       (net 44 "unconnected-(U7-GPIO07-Pad37)") (pinfunction "GPIO07") (pintype "bidirectional+no_connect") (solder_mask_margin 0.102) (tstamp 24ddb330-0854-4b36-af0c-2bfb820eeeff))
     (pad "38" thru_hole circle (at 12.7 22.87 180) (size 1.53 1.53) (drill 1.02) (layers "*.Cu" "*.Mask")
       (net 45 "unconnected-(U7-GPIO06-Pad38)") (pinfunction "GPIO06") (pintype "bidirectional+no_connect") (solder_mask_margin 0.102) (tstamp df4aa5f0-9bfc-45f0-bc1e-2af0cac9d188))
+    (model ":KICAD7_3DMODEL_DIR:ESP32/ESP32-DEVKITC--3DModel-STEP-56544.STEP"
+      (offset (xyz 0 0 3))
+      (scale (xyz 1 1 1))
+      (rotate (xyz -90 0 0))
+    )
   )
 
   (footprint "MountingHole:MountingHole_3.2mm_M3" locked (layer "F.Cu")
@@ -651,6 +681,11 @@
       (net 4 "GND") (pinfunction "Pin_1") (pintype "passive") (solder_mask_margin 0.102) (tstamp d933162a-0ddf-4188-a93e-51a63f78ec26))
     (pad "2" thru_hole circle (at 2.54 0 270) (size 2.4 2.4) (drill 1.2) (layers "*.Cu" "*.Mask")
       (net 4 "GND") (pinfunction "Pin_2") (pintype "passive") (solder_mask_margin 0.102) (tstamp 0126184f-1736-43a9-9906-e54a6fe0dbfa))
+    (model ":KICAD7_3DMODEL_DIR:2p_con/connector_2p v1.step"
+      (offset (xyz 2.2 2.1 7.5))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 -180))
+    )
   )
 
   (footprint "MountingHole:MountingHole_3.2mm_M3" locked (layer "F.Cu")
@@ -703,13 +738,18 @@
       (net 11 "/brightness_out_main") (pinfunction "Pin_2") (pintype "passive") (solder_mask_margin 0.102) (tstamp 60bfe0d4-2784-49a7-b917-46bcd27d77b4))
     (pad "3" thru_hole circle (at 5.08 0 270) (size 2.4 2.4) (drill 1.2) (layers "*.Cu" "*.Mask")
       (net 12 "/air_temp_main") (pinfunction "Pin_3") (pintype "passive") (solder_mask_margin 0.102) (tstamp 349edb26-57cf-4260-90f8-38664f23e34f))
+    (model ":KICAD7_3DMODEL_DIR:3p_con/connector_3p v2.step"
+      (offset (xyz 37.5 29.5 19.5))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 -180))
+    )
   )
 
   (footprint "LOGO" (layer "F.Cu")
     (tstamp 878767ab-2e1b-4d7b-9efa-4e4180567072)
     (at 180 97)
     (attr board_only exclude_from_pos_files exclude_from_bom)
-    (fp_text reference "G***" (at -9.5 -6) (layer "F.SilkS") hide
+    (fp_text reference "G***" (at -9.5 -6) (layer "User.9") hide
         (effects (font (size 1.524 1.524) (thickness 0.3)))
       (tstamp ccd6b87b-c4db-45d8-9f82-09039df24eab)
     )
@@ -1160,7 +1200,7 @@
       (net 2 "+3.3V") (pintype "passive") (tstamp 7c90c717-eeba-4772-9632-64c7eedc9ab4))
     (pad "2" thru_hole oval (at 12.7 0) (size 1.6 1.6) (drill 0.8) (layers "*.Cu" "*.Mask")
       (net 5 "/water_temp") (pintype "passive") (tstamp 02c2a34b-92e1-468a-b7a6-259cd1130eaf))
-    (model "${KICAD6_3DMODEL_DIR}/Resistor_THT.3dshapes/R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal.wrl" hide
+    (model "${KICAD6_3DMODEL_DIR}/Resistor_THT.3dshapes/R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal.wrl"
       (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
@@ -1202,6 +1242,11 @@
       (net 16 "/water_level_power") (pinfunction "VCC") (pintype "power_in") (solder_mask_margin 0.102) (tstamp fcf42eee-9919-412c-987f-82769ed25f92))
     (pad "3" thru_hole circle (at 2.54 0 180) (size 1.53 1.53) (drill 1.02) (layers "*.Cu" "*.Mask")
       (net 13 "/water_level") (pinfunction "OUT") (pintype "output") (solder_mask_margin 0.102) (tstamp 7f855e08-97dd-4cd5-ab9c-2a72b5489ea5))
+    (model ":KICAD7_3DMODEL_DIR:Water_level_sensor/water_level.step"
+      (offset (xyz 0 -7.2 -28.5))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 -90 0))
+    )
   )
 
   (footprint "Diplomna:3pin_holes" (layer "F.Cu")
@@ -1241,6 +1286,11 @@
       (net 3 "/air_temp") (pinfunction "DQ") (pintype "bidirectional") (solder_mask_margin 0.102) (tstamp 33b3f70b-b704-49b9-a8f8-055dec899cae))
     (pad "3" thru_hole circle (at 2.54 0 90) (size 1.53 1.53) (drill 1.02) (layers "*.Cu" "*.Mask")
       (net 1 "+3V3") (pinfunction "V_{DD}") (pintype "power_in") (solder_mask_margin 0.102) (tstamp 4b9a8a55-7238-470a-af06-febc97420eca))
+    (model ":KICAD7_3DMODEL_DIR:Ds18B20/ds18b20.STEP"
+      (offset (xyz 0 30 -20))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 180 -90))
+    )
   )
 
   (footprint "MountingHole:MountingHole_3.2mm_M3" locked (layer "F.Cu")
@@ -1320,6 +1370,11 @@
       (net 2 "+3.3V") (pinfunction "PWR") (pintype "power_in") (solder_mask_margin 0.102) (tstamp 8ac309bd-f46a-4e66-ab0e-15671415d8d9))
     (pad "3" thru_hole circle (at 2.54 0 90) (size 1.53 1.53) (drill 1.02) (layers "*.Cu" "*.Mask")
       (net 14 "/turbidity") (pinfunction "OUT") (pintype "output") (solder_mask_margin 0.102) (tstamp 69e65efd-57eb-4b75-a543-a964dea5affe))
+    (model ":KICAD7_3DMODEL_DIR:Turbidity_sensor/Analog Isolator DF Robot v1.step"
+      (offset (xyz 0.3 -28.5 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 0))
+    )
   )
 
   (footprint "MountingHole:MountingHole_3.2mm_M3" locked (layer "F.Cu")
@@ -1416,6 +1471,11 @@
       (net 6 "/uv_out") (pinfunction "OUT") (pintype "output") (solder_mask_margin 0.102) (tstamp ea863f06-7e79-4ae9-a337-e668d466c699))
     (pad "5" thru_hole circle (at 5.08 0 180) (size 1.53 1.53) (drill 1.02) (layers "*.Cu" "*.Mask")
       (net 1 "+3V3") (pinfunction "EN") (pintype "passive") (solder_mask_margin 0.102) (tstamp 27d614c5-9f77-4577-abdd-7f583cb57ac5))
+    (model ":KICAD7_3DMODEL_DIR:UV/uv.step"
+      (offset (xyz 161 -75.5 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 -180))
+    )
   )
 
   (footprint "Diplomna:connector_3p" (layer "B.Cu")
@@ -1447,6 +1507,11 @@
       (net 9 "GND1") (pinfunction "Pin_2") (pintype "passive") (solder_mask_margin 0.102) (tstamp b411a48f-e72a-457c-9dc9-b222936a5cde))
     (pad "3" thru_hole circle (at 5.08 0 180) (size 2.4 2.4) (drill 1.2) (layers "*.Cu" "*.Mask")
       (net 1 "+3V3") (pinfunction "Pin_3") (pintype "passive") (solder_mask_margin 0.102) (tstamp 57832215-876b-4dd9-9415-31cb6ff9b915))
+    (model ":KICAD7_3DMODEL_DIR:3p_con/connector_3p v2.step"
+      (offset (xyz -36 -29.5 20))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 0))
+    )
   )
 
   (footprint "Diplomna:connector_3p" (layer "B.Cu")
@@ -1478,6 +1543,11 @@
       (net 7 "/brightness_out") (pinfunction "Pin_2") (pintype "passive") (solder_mask_margin 0.102) (tstamp e6fef912-217e-479d-92cd-08737e1838a8))
     (pad "3" thru_hole circle (at 5.08 0 180) (size 2.4 2.4) (drill 1.2) (layers "*.Cu" "*.Mask")
       (net 3 "/air_temp") (pinfunction "Pin_3") (pintype "passive") (solder_mask_margin 0.102) (tstamp e41689d7-b950-45ea-9629-113558bc9932))
+    (model ":KICAD7_3DMODEL_DIR:3p_con/connector_3p v2.step"
+      (offset (xyz -36 -29.5 20))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 0))
+    )
   )
 
   (footprint "LOGO" (layer "B.Cu")
@@ -1903,6 +1973,11 @@
       (net 9 "GND1") (pinfunction "Pin_1") (pintype "passive") (solder_mask_margin 0.102) (tstamp dba778b5-7cf6-4e6a-aca3-3941742fbda1))
     (pad "2" thru_hole circle (at 2.54 0 180) (size 2.4 2.4) (drill 1.2) (layers "*.Cu" "*.Mask")
       (net 9 "GND1") (pinfunction "Pin_2") (pintype "passive") (solder_mask_margin 0.102) (tstamp 98cb89a4-0ccc-45b7-b8ee-98635490dfd6))
+    (model ":KICAD7_3DMODEL_DIR:2p_con/connector_2p v1.step"
+      (offset (xyz -2 -2 8))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 0))
+    )
   )
 
   (gr_circle (center 55.092849 44.992849) (end 53.692849 41.792849)
@@ -2002,37 +2077,37 @@
   (dimension (type aligned) (layer "F.SilkS") (tstamp 516d4608-93a9-493a-8fd3-3af3f2ec4d02)
     (pts (xy 50.5 40.5) (xy 93.5 40.5))
     (height -6.75)
-    (gr_text "43.0000 mm" (at 72 31.35) (layer "F.SilkS") (tstamp 516d4608-93a9-493a-8fd3-3af3f2ec4d02)
+    (gr_text "43.0 mm" (at 72 31.35) (layer "F.SilkS") (tstamp 516d4608-93a9-493a-8fd3-3af3f2ec4d02)
       (effects (font (size 2 2) (thickness 0.4) bold))
     )
-    (format (prefix "") (suffix "") (units 3) (units_format 1) (precision 4))
+    (format (prefix "") (suffix "") (units 3) (units_format 1) (precision 1))
     (style (thickness 0.2) (arrow_length 1.27) (text_position_mode 0) (extension_height 0.58642) (extension_offset 0.5) keep_text_aligned)
   )
   (dimension (type aligned) (layer "F.SilkS") (tstamp 764a8244-c86a-4c24-8507-f7eb89f7bdcf)
     (pts (xy 196 114) (xy 50.5 114))
     (height -8.5)
-    (gr_text "145.5000 mm" (at 123.25 120.1) (layer "F.SilkS") (tstamp 764a8244-c86a-4c24-8507-f7eb89f7bdcf)
+    (gr_text "145.5 mm" (at 123.25 120.1) (layer "F.SilkS") (tstamp 764a8244-c86a-4c24-8507-f7eb89f7bdcf)
       (effects (font (size 2 2) (thickness 0.4) bold))
     )
-    (format (prefix "") (suffix "") (units 3) (units_format 1) (precision 4))
+    (format (prefix "") (suffix "") (units 3) (units_format 1) (precision 1))
     (style (thickness 0.2) (arrow_length 1.27) (text_position_mode 0) (extension_height 0.58642) (extension_offset 0.5) keep_text_aligned)
   )
   (dimension (type aligned) (layer "F.SilkS") (tstamp b353392c-f766-4db4-b633-ae9dd0a23fd2)
     (pts (xy 196 40.5) (xy 93.5 40.5))
     (height 6.75)
-    (gr_text "102.5000 mm" (at 144.75 31.35) (layer "F.SilkS") (tstamp b353392c-f766-4db4-b633-ae9dd0a23fd2)
+    (gr_text "102.5 mm" (at 144.75 31.35) (layer "F.SilkS") (tstamp b353392c-f766-4db4-b633-ae9dd0a23fd2)
       (effects (font (size 2 2) (thickness 0.4) bold))
     )
-    (format (prefix "") (suffix "") (units 3) (units_format 1) (precision 4))
+    (format (prefix "") (suffix "") (units 3) (units_format 1) (precision 1))
     (style (thickness 0.2) (arrow_length 1.27) (text_position_mode 0) (extension_height 0.58642) (extension_offset 0.5) keep_text_aligned)
   )
   (dimension (type aligned) (layer "F.SilkS") (tstamp c90cbabe-1910-48e6-a499-f412698ed9ae)
     (pts (xy 196 40.5) (xy 196 114))
     (height -10.5)
-    (gr_text "73.5000 mm" (at 204.1 77.25 90) (layer "F.SilkS") (tstamp c90cbabe-1910-48e6-a499-f412698ed9ae)
+    (gr_text "73.5 mm" (at 204.1 77.25 90) (layer "F.SilkS") (tstamp c90cbabe-1910-48e6-a499-f412698ed9ae)
       (effects (font (size 2 2) (thickness 0.4) bold))
     )
-    (format (prefix "") (suffix "") (units 3) (units_format 1) (precision 4))
+    (format (prefix "") (suffix "") (units 3) (units_format 1) (precision 1))
     (style (thickness 0.2) (arrow_length 1.27) (text_position_mode 0) (extension_height 0.58642) (extension_offset 0.5) keep_text_aligned)
   )
 

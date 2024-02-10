@@ -23,8 +23,8 @@
     <h2>Made by Liubomir Stanev - 12G</h2>
 
     <script>
-    function autoMode() {
-            fetch('/autoMode')
+        function autoMode(state) {
+            fetch(`/autoMode?state=${state}`)
                 .then(response => response.text())
                 .then(data => console.log(data))
                 .catch(error => console.error('Error:', error));

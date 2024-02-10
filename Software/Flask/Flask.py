@@ -57,15 +57,16 @@ def sensors():
 def control_mode():
     try:
         state = request.args.get('state')
+        print(f"Received state: {state}")
 
         # Send the control signal to ESP32 using HTTP GET request
-        esp32_url = f"http://{ESP32_IP}/state={state}"
+        esp32_url = f"http://{ESP32_IP}/?set_auto_mode&state={state}"
         response = requests.get(esp32_url)
 
         if response.status_code == 200:
-            return f"mode signal '{state}' sent to ESP32!"
+            return jsonify({"message": f"Mode signal '{state}' sent to ESP32!"})
         else:
-            return f"Failed to send mode signal to ESP32. Response: {response.text}", 500
+            return jsonify({"error": f"Failed to send mode signal to ESP32. Response: {response.text}"}), response.status_code
     except Exception as e:
         return jsonify({"error": str(e)})
 

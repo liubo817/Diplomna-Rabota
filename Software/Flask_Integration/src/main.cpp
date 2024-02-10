@@ -6,12 +6,12 @@
 #include <HTTPClient.h>
 
 #define ds18b20WaterPin 16
-#define ds18b20Pin 34
+#define ds18b20Pin 17
 #define uvPin 32
 #define uvRefPin 12
 #define turbidityPin 33
 #define waterLevelSensorPower 21
-#define waterLevelPin 26
+#define waterLevelPin 35
 #define brightnessPin 36
 
 #define relayLamp 19
@@ -87,12 +87,10 @@ float scaleToLogarithmic(int sensorReading)
 
 int turbidity()
 {
-  int turbidityValue = analogRead(turbidityPin);
-  int cleanValue = map(turbidityValue, 0, 4095, 4095, 0);
-  float logarithmicTurbidity = scaleToLogarithmic(cleanValue);
-  Serial.println("Turbidity" + turbidityValue);
-  Serial.println("Clean" + cleanValue);
-  return logarithmicTurbidity;
+  int turbidityValue = digitalRead(turbidityPin);
+  float logarithmicTurbidity = scaleToLogarithmic(turbidityValue);
+  //Serial.println(logarithmicTurbidity);
+  return turbidityValue;
 }
 
 
@@ -123,17 +121,15 @@ float waterLevel()
 	delay(10);
 	waterLevel = analogRead(waterLevelPin);
 	digitalWrite(waterLevelSensorPower, LOW);
-  waterLevelPercentage = map(waterLevel, 0, 1400, 0, 100);
+  waterLevelPercentage = map(waterLevel, 555, 1670, 0, 100);
 	return waterLevelPercentage;
-  return 0;
 }
 
 
 float UVlevel()
 {
   int uvLevel = analogRead(uvPin);
-  int refLevel = analogRead(uvRefPin);
-  float outputVoltage = 3.3 / refLevel * uvLevel;
+  float outputVoltage = uvLevel * (3.3 / 4095);
   float uvIntensity = mapfloat(outputVoltage, 0.99, 2.8, 0.0, 15.0); //Convert the voltage to a UV intensity level
   return uvIntensity;
 }
@@ -153,6 +149,7 @@ void setup(void)
   pinMode(waterLevelSensorPower, OUTPUT);
   pinMode(uvPin, INPUT);
   pinMode(uvRefPin, INPUT);
+  pinMode(waterLevelPin, INPUT);
   pinMode(relayLamp, OUTPUT);
   pinMode(relayUV, OUTPUT);
   pinMode(relayHeater, OUTPUT);
@@ -183,66 +180,60 @@ void loop()
     String request = client.readStringUntil('\r');
     Serial.println("Received request: " + request);
 
-    if (request.indexOf("state=ON") != -1) {
-      if (request.indexOf("device_type=LAMP") != -1) {
-        digitalWrite(relayLamp, HIGH);
-        Serial.println("Turning ON the LAMP");
-      }
-    }
-    else if (request.indexOf("state=OFF") != -1) {
-      if (request.indexOf("device_type=LAMP") != -1) {
-        digitalWrite(relayLamp, LOW);
-        Serial.println("Turning OFF the LAMP");
-      }
-    }
-
-    if (request.indexOf("state=ON") != -1) {
-      if (request.indexOf("device_type=UV_LAMP") != -1) {
-        digitalWrite(relayUV, HIGH);
-        Serial.println("Turning ON the UV LAMP");
-      }
-    }
-    else if (request.indexOf("state=OFF") != -1) {
-      if (request.indexOf("device_type=UV_LAMP") != -1) {
-        digitalWrite(relayUV, LOW);
-        Serial.println("Turning OFF the UV LAMP");
-      }
-    }
-
-    if (request.indexOf("state=ON") != -1) {
-      if (request.indexOf("device_type=HEATER") != -1) {
-        digitalWrite(relayHeater, HIGH);
-        Serial.println("Turning ON the HEATER");
-      }
-    }
-    else if (request.indexOf("state=OFF") != -1) {
-      if (request.indexOf("device_type=HEATER") != -1) {
-        digitalWrite(relayHeater, LOW);
-        Serial.println("Turning OFF the HEATER");
-      }
-    }
-
-
-    // Handle the auto mode state based on the request
     if (request.indexOf("set_auto_mode") != -1) {
       if (request.indexOf("state=ON") != -1) {
         auto_mode = true;
         Serial.println("Auto Mode turned ON");
 
+        if (waterTemp() < 24) {
+          digitalWrite(relayHeater, HIGH);
+        }
+        if (waterTemp() > 30)
+        {
+          digitalWrite(relayHeater, LOW);
+        }
+        if (brightness() < 70) {
+          digitalWrite(relayLamp, HIGH);
+        }
+        if (brightness() > 95)
+        {
+          digitalWrite(relayLamp, LOW);
+        }
+        if (UVlevel() <= 0.5) {
+          digitalWrite(relayUV, HIGH);
+        }
+        if (UVlevel() > 1.5)
+        {
+          digitalWrite(relayUV, LOW);
+        }
       } else if (request.indexOf("state=OFF") != -1) {
         auto_mode = false;
         Serial.println("Auto Mode turned OFF");
       }
-
-      // Send a response to the client
-      client.println("HTTP/1.1 200 OK");
-      client.println("Content-Type: text/html");
-      client.println();
-      client.println("Auto Mode state processed");
-
-      // Close the connection
-      client.stop();
-      Serial.println("Client disconnected");
+    } else {
+      if (request.indexOf("state=ON") != -1) {
+        if (request.indexOf("device_type=LAMP") != -1) {
+          digitalWrite(relayLamp, HIGH);
+          Serial.println("Turning ON the LAMP");
+        } else if (request.indexOf("device_type=UV_LAMP") != -1) {
+          digitalWrite(relayUV, HIGH);
+          Serial.println("Turning ON the UV LAMP");
+        } else if (request.indexOf("device_type=HEATER") != -1) {
+          digitalWrite(relayHeater, HIGH);
+          Serial.println("Turning ON the HEATER");
+        }
+      } else if (request.indexOf("state=OFF") != -1) {
+        if (request.indexOf("device_type=LAMP") != -1) {
+          digitalWrite(relayLamp, LOW);
+          Serial.println("Turning OFF the LAMP");
+        } else if (request.indexOf("device_type=UV_LAMP") != -1) {
+          digitalWrite(relayUV, LOW);
+          Serial.println("Turning OFF the UV LAMP");
+        } else if (request.indexOf("device_type=HEATER") != -1) {
+          digitalWrite(relayHeater, LOW);
+          Serial.println("Turning OFF the HEATER");
+        }
+      }
     }
   }
 
@@ -251,19 +242,19 @@ void loop()
 
   if (currentMillis - lastUpdateTime >= updateInterval) {
 
-    //Serial.println(waterTemp());
-    // Serial.println(airTemp());
-    // Serial.println(UVlevel());
-    // Serial.println(brightness());
-    // Serial.println(waterLevel());
-    Serial.println(turbidity());
+    Serial.println(waterTemp());
+    //Serial.println(airTemp());
+    Serial.println(UVlevel());
+    Serial.println(brightness());
+    //Serial.println(waterLevel());
+    //Serial.println(turbidity());
     // Send sensor data to the server
     //sendSensorData("Water Temp", waterTemp());
-    sendSensorData("Turbidity", turbidity());
-    // sendSensorData("Air Temp", airTemp());
-    // sendSensorData("UV Level", UVlevel());
-    // sendSensorData("Brightness Level", brightness());
-    // sendSensorData("Water Level", waterLevel());
+    //sendSensorData("Turbidity", turbidity());
+    //sendSensorData("Air Temp", airTemp());
+    //sendSensorData("UV Level", UVlevel());
+    //sendSensorData("Brightness Level", brightness());
+    //sendSensorData("Water Level", waterLevel());
     lastUpdateTime = currentMillis;
   }
 
