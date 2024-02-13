@@ -8,21 +8,16 @@
 #define ds18b20WaterPin 16
 #define ds18b20Pin 17
 #define uvPin 32
-#define uvRefPin 12
 #define turbidityPin 33
-#define waterLevelSensorPower 21
 #define waterLevelPin 35
 #define brightnessPin 36
-
 #define relayLamp 19
 #define relayUV 18
 #define relayHeater 5
+#define waterLevelSensorPower 21
 
 
-int water_level;
-int water_level_percent;
 bool auto_mode = false;
-
 const float minLogValue = 2.5;  
 const float maxLogValue = 10.0;
 
@@ -33,6 +28,7 @@ const int serverPort = 80;
 
 
 WiFiServer server(serverPort);
+
 OneWire oneWire(ds18b20WaterPin);	
 DallasTemperature ds18b20_water(&oneWire);
 
@@ -40,21 +36,20 @@ OneWire oneWireAir(ds18b20Pin);
 DallasTemperature ds18b20(&oneWireAir);
 
 void sendSensorData(const char* sensorType, float data) {
+  
   HTTPClient http;
-
-  // Check if WiFi is connected
-  if (WiFi.status() == WL_CONNECTED) {
-    // Your Flask server endpoint
-    http.begin(serverAddress);
-    // Specify content type
-    http.addHeader("Content-Type", "application/json");
-    // Create JSON payload
-    String jsonData = "{\"sensorType\":\"" + String(sensorType) + "\",\"sensorData\":" + String(data) + "}";
+  
+  if (WiFi.status() == WL_CONNECTED) // Check if WiFi is connected
+  {
+    http.begin(serverAddress); // Your Flask server endpoint
+    http.addHeader("Content-Type", "application/json"); // Specify content type
     
-    // Send the POST request
-    int httpResponseCode = http.POST(jsonData);
-    // Check for errors
-    if (httpResponseCode > 0) {
+    String jsonData = "{\"sensorType\":\"" + String(sensorType) + "\",\"sensorData\":" + String(data) + "}"; // Create JSON payload
+    int httpResponseCode = http.POST(jsonData); // Send the POST request
+    
+
+    if (httpResponseCode > 0) // Check for errors
+    {
       Serial.print("HTTP Response code: ");
       Serial.println(httpResponseCode);
     } else {
@@ -62,13 +57,10 @@ void sendSensorData(const char* sensorType, float data) {
       Serial.println(httpResponseCode);
     }
 
-    // Free resources
     http.end();
   } else {
     Serial.println("WiFi not connected. Skipping HTTP request.");
   }
-
-  delay(3000);
 }
 
 
@@ -87,9 +79,8 @@ float scaleToLogarithmic(int sensorReading)
 
 int turbidity()
 {
-  int turbidityValue = digitalRead(turbidityPin);
+  int turbidityValue = analogRead(turbidityPin);
   float logarithmicTurbidity = scaleToLogarithmic(turbidityValue);
-  //Serial.println(logarithmicTurbidity);
   return turbidityValue;
 }
 
@@ -115,13 +106,13 @@ float airTemp()
 float waterLevel()
 {
   int waterLevel;
-  int sensor_data;
   float waterLevelPercentage;
+  waterLevel = analogRead(waterLevelPin);
 	digitalWrite(waterLevelSensorPower, HIGH);
 	delay(10);
-	waterLevel = analogRead(waterLevelPin);
 	digitalWrite(waterLevelSensorPower, LOW);
   waterLevelPercentage = map(waterLevel, 555, 1670, 0, 100);
+  return waterLevel;
 	return waterLevelPercentage;
 }
 
@@ -130,7 +121,7 @@ float UVlevel()
 {
   int uvLevel = analogRead(uvPin);
   float outputVoltage = uvLevel * (3.3 / 4095);
-  float uvIntensity = mapfloat(outputVoltage, 0.99, 2.8, 0.0, 15.0); //Convert the voltage to a UV intensity level
+  float uvIntensity = mapfloat(outputVoltage, 0.99, 2.8, 0.0, 15.0); //Convert voltage to UV intensity
   return uvIntensity;
 }
 
@@ -148,15 +139,16 @@ void setup(void)
 {
   pinMode(waterLevelSensorPower, OUTPUT);
   pinMode(uvPin, INPUT);
-  pinMode(uvRefPin, INPUT);
   pinMode(waterLevelPin, INPUT);
   pinMode(relayLamp, OUTPUT);
   pinMode(relayUV, OUTPUT);
   pinMode(relayHeater, OUTPUT);
-  ds18b20_water.begin();
-  ds18b20.begin();
+
   Serial.begin(9600);
   WiFi.begin(ssid, password);
+  ds18b20_water.begin();
+  ds18b20.begin();
+
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     Serial.println("Connecting to WiFi...");
@@ -164,8 +156,7 @@ void setup(void)
   Serial.println("Connected to WiFi");
   Serial.print("ESP32 IP Address: ");
   Serial.println(WiFi.localIP());
-  //Start the server
-  server.begin();
+  server.begin(); //Start the server
   Serial.println("Server started");
 }
 
@@ -176,6 +167,7 @@ void loop()
   const unsigned long updateInterval = 5000; // Update every 5 seconds
 
   WiFiClient client = server.available();
+
   if (client) {
     String request = client.readStringUntil('\r');
     Serial.println("Received request: " + request);
@@ -184,28 +176,8 @@ void loop()
       if (request.indexOf("state=ON") != -1) {
         auto_mode = true;
         Serial.println("Auto Mode turned ON");
-
-        if (waterTemp() < 24) {
-          digitalWrite(relayHeater, HIGH);
-        }
-        if (waterTemp() > 30)
-        {
-          digitalWrite(relayHeater, LOW);
-        }
-        if (brightness() < 70) {
-          digitalWrite(relayLamp, HIGH);
-        }
-        if (brightness() > 95)
-        {
-          digitalWrite(relayLamp, LOW);
-        }
-        if (UVlevel() <= 0.5) {
-          digitalWrite(relayUV, HIGH);
-        }
-        if (UVlevel() > 1.5)
-        {
-          digitalWrite(relayUV, LOW);
-        }
+          
+    
       } else if (request.indexOf("state=OFF") != -1) {
         auto_mode = false;
         Serial.println("Auto Mode turned OFF");
@@ -237,6 +209,37 @@ void loop()
     }
   }
 
+    if(auto_mode == true)
+    {
+      if (waterTemp() < 24)
+        {
+          digitalWrite(relayHeater, HIGH);
+        }
+        else if (waterTemp() > 30)
+        {
+          digitalWrite(relayHeater, LOW);
+        }
+
+        if (brightness() < 70)
+        {
+          digitalWrite(relayLamp, HIGH);
+        }
+        else if (brightness() > 95)
+        {
+          digitalWrite(relayLamp, LOW);
+        }
+
+        if (UVlevel() <= 0.5)
+        {
+          digitalWrite(relayUV, HIGH);
+        }
+        else if (UVlevel() > 1.5)
+        {
+          digitalWrite(relayUV, LOW);
+        }
+    }
+
+
   unsigned long currentMillis = millis();
 
 
@@ -248,7 +251,7 @@ void loop()
     Serial.println(brightness());
     //Serial.println(waterLevel());
     //Serial.println(turbidity());
-    // Send sensor data to the server
+    //Send sensor data to the server
     //sendSensorData("Water Temp", waterTemp());
     //sendSensorData("Turbidity", turbidity());
     //sendSensorData("Air Temp", airTemp());

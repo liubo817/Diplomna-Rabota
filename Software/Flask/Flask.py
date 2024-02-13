@@ -21,7 +21,6 @@ with app.app_context():
     db.create_all()
 
 def convert_to_bulgarian_time(timestamp):
-    # Convert timestamp to Bulgarian time
     utc_timezone = pytz.timezone('UTC')
     bulgarian_timezone = pytz.timezone('Europe/Sofia')
     utc_time = utc_timezone.localize(timestamp)
