@@ -16,6 +16,7 @@ class SensorData(db.Model):
     timestamp = db.Column(db.DateTime, server_default=db.func.now())
     sensor_type = db.Column(db.String(50))
     sensor_data = db.Column(db.Float)
+    measuring_unit = db.Column(db.String(20))
 
 with app.app_context():
     db.create_all()
@@ -37,20 +38,23 @@ def control_page():
 
 @app.route('/sensors')
 def sensors():
-    # Retrieve data from the database
     data = SensorData.query.all()
 
     # Create a pandas DataFrame
-    df = pd.DataFrame([(convert_to_bulgarian_time(entry.timestamp), entry.sensor_type, entry.sensor_data) for entry in data], columns=['timestamp', 'sensor_type', 'sensor_data'])
+    df = pd.DataFrame([(convert_to_bulgarian_time(entry.timestamp), entry.sensor_type, entry.sensor_data, entry.measuring_unit) for entry in data],
+                      columns=['Time', 'sensor_type', 'Sensor_data', 'Measuring_unit'])
 
     # Create a Plotly chart for each sensor type
     graphs = {}
     for sensor_type in df['sensor_type'].unique():
         sensor_df = df[df['sensor_type'] == sensor_type]
-        fig = px.line(sensor_df, x='timestamp', y='sensor_data', labels={'x': 'Timestamp', 'y': 'Sensor Data'})
+        fig = px.line(sensor_df, x='Time', y='Sensor_data',
+                      labels={'x': 'Time', 'y': f'{sensor_type} - Measuring Unit'})
         graphs[sensor_type] = fig.to_html(full_html=False)
 
     return render_template('sensors.html', graphs=graphs)
+
+
 
 @app.route('/autoMode', methods=['GET'])
 def control_mode():
@@ -98,12 +102,13 @@ def receive_data():
         data = request.get_json()
         sensor_type = data.get('sensorType')
         sensor_data = data.get('sensorData')
+        measuring_unit = data.get('measuringUnit')  # New data for measuring unit
 
         # Process the sensor data as needed
-        print(f"Received {sensor_type}: {sensor_data}")
+        print(f"Received {sensor_type}: {sensor_data} {measuring_unit}")
 
         # Save data to the database
-        new_data = SensorData(sensor_type=sensor_type, sensor_data=sensor_data)
+        new_data = SensorData(sensor_type=sensor_type, sensor_data=sensor_data, measuring_unit=measuring_unit)
         db.session.add(new_data)
         db.session.commit()
 
