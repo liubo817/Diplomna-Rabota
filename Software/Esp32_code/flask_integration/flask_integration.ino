@@ -20,9 +20,9 @@ bool auto_mode = false;
 const float minLogValue = 2.5;  
 const float maxLogValue = 10.0;
 
-const char* ssid = "A1_BDF6"; //YourWiFiSSID
-const char* password = "48575443203A96AA"; //YourWiFiPassword
-const char* serverAddress = "http://192.168.100.10:5000/receive_data";
+const char* ssid = ""; //YourWiFiSSID
+const char* password = ""; //YourWiFiPassword
+const char* serverAddress = "http://192.168.1.3:5000/receive_data";
 const int serverPort = 80;
 
 
@@ -131,9 +131,9 @@ float UVlevel()
 int brightness()
 {
   int brightnessLevel = analogRead(brightnessPin);
-  int brightnessPercentage;
-  brightnessPercentage = map(brightnessLevel, 0, 4095, 0, 100);
-  return brightnessPercentage;
+  int brightnessLux;
+  brightnessLux = map(brightnessLevel, 0, 4095, 10, 1000);
+  return brightnessLux;
 }
 
 
@@ -251,16 +251,16 @@ void loop()
     //Serial.println(waterTemp());
     //Serial.println(airTemp());
     //Serial.println(UVlevel());
-    //Serial.println(brightness());
+    Serial.println(brightness());
     //Serial.println(waterLevel());
-    Serial.println(turbidity());
+    //Serial.println(turbidity());
     //Send sensor data to the server
-    sendSensorData("Water Temp", waterTemp(), "Celsius");
-    //sendSensorData("Turbidity", turbidity());
-    sendSensorData("Air Temp", airTemp(), "Celsius");
-    //sendSensorData("UV Level", UVlevel());
-    sendSensorData("Brightness Level", brightness() , "Percantage");
-    //sendSensorData("Water Level", waterLevel());
+    //sendSensorData("Water Temp", waterTemp(), "Celsius");
+    //sendSensorData("Turbidity", turbidity(), "Percentage");
+    //sendSensorData("Air Temp", airTemp(), "Celsius");
+    //sendSensorData("UV Level", UVlevel(), "UV intensity mW/cm2");
+    sendSensorData("Brightness Level", brightness(), "Lux");
+    //sendSensorData("Water Level", waterLevel(), "Celsius");
     lastUpdateTime = currentMillis;
   }
 

@@ -5,7 +5,7 @@ import pandas as pd
 import pytz
 import requests
 
-ESP32_IP = "192.168.100.234"
+ESP32_IP = "192.168.1.2"
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sensor_data.db'
