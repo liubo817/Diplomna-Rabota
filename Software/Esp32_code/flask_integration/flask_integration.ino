@@ -22,7 +22,7 @@ const float maxLogValue = 10.0;
 
 const char* ssid = ""; //YourWiFiSSID
 const char* password = ""; //YourWiFiPassword
-const char* serverAddress = "http://192.168.1.3:5000/receive_data";
+const char* serverAddress = "http://192.168.100.10:5000/receive_data";
 const int serverPort = 80;
 
 
@@ -189,23 +189,29 @@ void loop()
       if (request.indexOf("state=ON") != -1) {
         if (request.indexOf("device_type=LAMP") != -1) {
           digitalWrite(relayLamp, HIGH);
+          auto_mode = false;
           Serial.println("Turning ON the LAMP");
         } else if (request.indexOf("device_type=UV_LAMP") != -1) {
           digitalWrite(relayUV, HIGH);
+          auto_mode = false;         
           Serial.println("Turning ON the UV LAMP");
         } else if (request.indexOf("device_type=HEATER") != -1) {
           digitalWrite(relayHeater, HIGH);
+          auto_mode = false;
           Serial.println("Turning ON the HEATER");
         }
       } else if (request.indexOf("state=OFF") != -1) {
         if (request.indexOf("device_type=LAMP") != -1) {
           digitalWrite(relayLamp, LOW);
+          auto_mode = false;
           Serial.println("Turning OFF the LAMP");
         } else if (request.indexOf("device_type=UV_LAMP") != -1) {
           digitalWrite(relayUV, LOW);
+          auto_mode = false;
           Serial.println("Turning OFF the UV LAMP");
         } else if (request.indexOf("device_type=HEATER") != -1) {
           digitalWrite(relayHeater, LOW);
+          auto_mode = false;
           Serial.println("Turning OFF the HEATER");
         }
       }
