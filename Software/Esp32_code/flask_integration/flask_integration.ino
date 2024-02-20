@@ -254,19 +254,19 @@ void loop()
 
   if (currentMillis - lastUpdateTime >= updateInterval) {
 
-    //Serial.println(waterTemp());
-    //Serial.println(airTemp());
-    //Serial.println(UVlevel());
+    Serial.println(waterTemp());
+    Serial.println(airTemp());
+    Serial.println(UVlevel());
     Serial.println(brightness());
-    //Serial.println(waterLevel());
-    //Serial.println(turbidity());
+    Serial.println(waterLevel());
+    Serial.println(turbidity());
     //Send sensor data to the server
-    //sendSensorData("Water Temp", waterTemp(), "Celsius");
-    //sendSensorData("Turbidity", turbidity(), "Percentage");
-    //sendSensorData("Air Temp", airTemp(), "Celsius");
-    //sendSensorData("UV Level", UVlevel(), "UV intensity mW/cm2");
+    sendSensorData("Water Temp", waterTemp(), "Celsius");
+    sendSensorData("Turbidity", turbidity(), "Percentage");
+    sendSensorData("Air Temp", airTemp(), "Celsius");
+    sendSensorData("UV Level", UVlevel(), "UV intensity mW/cm2");
     sendSensorData("Brightness Level", brightness(), "Lux");
-    //sendSensorData("Water Level", waterLevel(), "Celsius");
+    sendSensorData("Water Level", waterLevel(), "Celsius");
     lastUpdateTime = currentMillis;
   }
 
