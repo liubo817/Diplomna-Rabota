@@ -4,7 +4,7 @@
 ## **Описание**
 Дипломната работа представя успешната разработка на вградена система, предназначена за наблюдение и управление на терариум за земноводни костенурки. Проектът обхваща иновативен хардуер и софтуер, които съчетават общоприети технологии.
 
-## [Докуемнтация](https://docs.google.com/document/d/1n0dCljN07w4FLzlgteggXlk4XJQZPIcb2BojlvGgTRA/edit) ##
+## [Документация](https://docs.google.com/document/d/1n0dCljN07w4FLzlgteggXlk4XJQZPIcb2BojlvGgTRA/edit) ##
 
 ## **Създател:**
 - **[Любомир Станев](https://github.com/liubo817)**
